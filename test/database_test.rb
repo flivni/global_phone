@@ -24,6 +24,15 @@ module GlobalPhone
       assert_equal db.region(44), territory.region
     end
 
+    test "territories have example numbers" do
+      territory = db.territory(:gb)
+      assert_kind_of Territory, territory
+      assert_equal "GB", territory.name
+      assert_equal db.region(44), territory.region
+      assert_equal '1212345678', territory.example_numbers['fixedLine']
+      assert_equal '7400123456', territory.example_numbers['mobile']
+    end
+
     test "nonexistent territory returns nil" do
       assert_nil db.territory("nonexistent")
     end

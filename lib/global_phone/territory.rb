@@ -6,7 +6,8 @@ module GlobalPhone
     field 0, :name
     field 1, :possible_pattern do |p| /^#{p}$/ end
     field 2, :national_pattern do |p| /^#{p}$/ end
-    field 3, :national_prefix_formatting_rule
+    field 3, :example_numbers
+    field 4, :national_prefix_formatting_rule
 
     attr_reader :region
 

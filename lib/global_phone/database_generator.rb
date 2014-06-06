@@ -54,6 +54,18 @@ module GlobalPhone
         node.search(example_numbers_selector).map { |node| [node.text, name] }
       end
 
+      def example_numbers_hash_for_territory_node(node)
+        name = territory_name(node)
+        result = {}
+
+        if name != "001"
+          result['fixedLine'] = pattern(node, "fixedLine exampleNumber")
+          result['mobile'] = pattern(node, "mobile exampleNumber")
+        end
+
+        result
+      end
+
       def example_numbers_selector
         "./*[not(" + example_number_types_to_exclude.map do |type|
           "self::#{type}"
@@ -101,7 +113,8 @@ module GlobalPhone
           territory_name(node),
           pattern(node, "generalDesc possibleNumberPattern"),
           pattern(node, "generalDesc nationalNumberPattern"),
-          squish(node["nationalPrefixFormattingRule"])
+          example_numbers_hash_for_territory_node(node),
+          squish(node["nationalPrefixFormattingRule"]),
         ]
       end
 
