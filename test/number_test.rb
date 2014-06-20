@@ -46,6 +46,11 @@ module GlobalPhone
       assert_equal "(312) 555-1212", number.national_format
     end
 
+    test "national_format_with_prefix" do
+      number = context.parse("11-2345-6789", "BR")
+      assert_equal "(11) 2345-6789", number.national_format
+    end
+
     test "international_string" do
       number = context.parse("(312) 555-1212")
       assert_equal "+13125551212", number.international_string
