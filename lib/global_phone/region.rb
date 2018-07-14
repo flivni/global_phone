@@ -30,11 +30,11 @@ module GlobalPhone
       territory_names.include?(name.to_s.upcase)
     end
 
-    def parse_national_string(string)
+    def parse_national_string(string, preferred_territory = nil)
       string = Number.normalize(string)
       if starts_with_country_code?(string)
         string = strip_country_code(string)
-        find_first_parsed_national_string_from_territories(string)
+        find_first_parsed_national_string_from_territories(string, preferred_territory)
       end
     end
 
@@ -55,8 +55,13 @@ module GlobalPhone
         string[country_code.length..-1]
       end
 
-      def find_first_parsed_national_string_from_territories(string)
-        Utils.map_detect(territories) { |territory| territory.parse_national_string(string) }
+      def find_first_parsed_national_string_from_territories(string, preferred_territory = nil)
+        # FELIX: First we look for a parsable preferred territory
+        national_string = Utils.map_detect(territories) { |territory| territory.name == preferred_territory and territory.parse_national_string(string) }
+
+        # If noparsable preferred territory, then we look for the first parsable territory
+        national_string ||= Utils.map_detect(territories) { |territory| territory.parse_national_string(string) }
+        national_string
       end
   end
 end
