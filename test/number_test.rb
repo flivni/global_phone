@@ -36,6 +36,15 @@ module GlobalPhone
       assert_equal db.territory(:gb), number.territory
     end
 
+    test 'territory when canadian number' do
+      number = context.parse("(902) 555-1212", 'CA')
+      assert_equal db.territory(:ca), number.territory
+
+      # this is a "bug" we patched for Schedulista
+      number = context.parse("+19025551212", 'CA')
+      assert_equal db.territory(:ca), number.territory
+    end
+
     test "national_string" do
       number = context.parse("(312) 555-1212")
       assert_equal "3125551212", number.national_string

@@ -9,7 +9,7 @@ module GlobalPhone
       raise ArgumentError, "unknown territory `#{territory_name}'" unless territory
 
       if starts_with_plus?(string)
-        parse_international_string(string)
+        parse_international_string(string, territory_name)
       elsif string =~ territory.international_prefix
         string = strip_international_prefix(territory, string)
         parse_international_string(string)
@@ -18,12 +18,12 @@ module GlobalPhone
       end
     end
 
-    def parse_international_string(string)
+    def parse_international_string(string, preferred_territory = nil)
       string = Number.normalize(string)
       string = strip_leading_plus(string) if starts_with_plus?(string)
 
       if region = region_for_string(string)
-        region.parse_national_string(string)
+        region.parse_national_string(string, preferred_territory)
       end
     end
 
