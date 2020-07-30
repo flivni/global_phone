@@ -10,8 +10,9 @@ module GlobalPhone
   class TestCase < ::Test::Unit::TestCase
     undef_method :default_test if method_defined?(:default_test)
 
+    # FELIX: I don't understand why this is here, but I changed it in order to run tests individually from Rubymine.
     def self.test(name, &block)
-      define_method(:"test #{name.inspect}", &block)
+      define_method(:"test_#{name.gsub(' ', '_')}", &block)
     end
 
     def context
